@@ -1,0 +1,49 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#renderTarget {
+    width: calc(100vh - 130px);
+    height: calc(100vh - 130px);
+}
+
+.controls form {
+    width: 250px;
+    float: left;
+}
+
+.controls .label, .controls .inputs {
+    float: left;
+}
+
+.controls .label {
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.controls .inputs {
+    width: calc(100% - 110px);
+}
+
+.controls .means, .controls .cov, .controls .submit-wrapper {
+    clear: both;
+    padding-bottom: 10px;
+}
+
+.controls input {
+    width: 30px;
+}
+
+.controls form div:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.controls .submit-wrapper {
+    margin-left: 110px;
+}

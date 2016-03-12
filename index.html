@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Multivariate Normal Example</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="bundle.js"></script>
+    </head>
+    <body>
+        <div id="renderTarget"></div>
+
+        <div class="controls">
+            <form class="2d" action="#">
+                <div class="means">
+                    <div class="label">Mean</div>
+                    <div class="inputs">
+                        <input type="number" step="any" placeholder="X" name="meanX"/>
+                        <input type="number" step="any" placeholder="Y" name="meanY"/>
+                    </div>
+                </div>
+
+                <div class="cov">
+                    <div class="label">Covariance</div>
+                    <div class="inputs">
+                        <input type="number" step="any" value="1" name="cov00"/>
+                        <input type="number" step="any" value="0" name="cov01"/>
+
+                        <br />
+
+                        <input type="number" step="any" value="0" name="cov10"/>
+                        <input type="number" step="any" value="1" name="cov11"/>
+                    </div>
+                </div>
+
+                <div class="submit-wrapper">
+                    <button type="submit">Run</button>
+                </div>
+            </form>
+
+            <form class="3d" action="#">
+                <div class="means">
+                    <div class="label">Mean</div>
+                    <div class="inputs">
+                        <input type="number" step="any" placeholder="X" name="meanX"/>
+                        <input type="number" step="any" placeholder="Y" name="meanY"/>
+                        <input type="number" step="any" placeholder="Z" name="meanZ"/>
+                    </div>
+                </div>
+
+                <div class="cov">
+                    <div class="label">Covariance</div>
+                    <div class="inputs">
+                        <input type="number" step="any" value="1" name="cov00"/>
+                        <input type="number" step="any" value="0" name="cov01"/>
+                        <input type="number" step="any" value="0" name="cov02"/>
+
+                        <br />
+
+                        <input type="number" step="any" value="0" name="cov10"/>
+                        <input type="number" step="any" value="1" name="cov11"/>
+                        <input type="number" step="any" value="0" name="cov12"/>
+
+                        <br />
+
+                        <input type="number" step="any" value="0" name="cov20"/>
+                        <input type="number" step="any" value="0" name="cov21"/>
+                        <input type="number" step="any" value="1" name="cov22"/>
+                    </div>
+                </div>
+
+                <div class="submit-wrapper">
+                    <button type="submit">Run</button>
+                </div>
+            </form>
+        </div>
+
+        <a href="https://github.com/tulip/multivariate-normal-js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    </body>
+</html>
