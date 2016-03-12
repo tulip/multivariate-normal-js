@@ -1,7 +1,7 @@
 multivariate-normal-js
 =====================
 
-A Javascript port of NumPy's `random.multivariate_normal`.
+A pure-javascript port of NumPy's `random.multivariate_normal`, for Node.js and the browser.
 
 Check out the [live demo](http://tulip.github.io/multivariate-normal-js)!
 
@@ -59,54 +59,72 @@ API
 ##### `MultivariateNormal(mean, covarianceMatrix) -> Distribution`
 
 Arguments:
-    - `mean` *1-D Array, of length N*: Mean of the N-dimensional distribution.
-    - `cov` *2-D Array, of shape (N, N)*: Covariance matrix of the distribution. It must be symmetric and positive-semidefinite for proper sampling.
 
-Returns: A Distribution object with methods described below. Distributions
+- `mean` *1-D Array, of length N*: Mean of the N-dimensional distribution.
+- `cov` *2-D Array, of shape (N, N)*: Covariance matrix of the distribution. It must be symmetric and positive-semidefinite for proper sampling.
+
+Returns:
+
+- A Distribution object with methods described below. Distributions
 are immutable -- the `set` methods return new distributions.
 
 
 ##### `distribution.sample() -> Array`
 
-Draw a random sample from the distribution. Returns an N-dimensional array.
+Draw a random sample from the distribution.
+
+Returns:
+
+- *1-D Array, of length N*: The random sample from the distribution.
 
 
 ##### `distribution.getMean(newMean) -> Array`
 
-Returns:
-    - *1-D Array, of length N*: Mean of the N-dimensional distribution.
-
 Returns the mean of this distribution. The array will be [frozen](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
+
+Returns:
+
+- *1-D Array, of length N*: Mean of the distribution.
 
 
 ##### `distribution.setMean(newMean) -> Distribution`
 
-Arguments:
-    - `newMean` *1-D Array, of length N*: Mean of the N-dimensional distribution.
-
 Returns a new Distribution with the same covariance matrix as the current distribution, but a new mean.
+
+Arguments:
+
+- `newMean` *1-D Array, of length N*: Mean of the new distribution.
+
+Returns:
+
+- A new Distribution object.
 
 
 ##### `distribution.getCov(newMean) -> Array`
 
-Returns:
-    - *2-D Array, of shape (N, N)*: Covariance matrix of the distribution.
-
 Returns the covariance of this distribution. The array will be [frozen](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze).
+
+Returns:
+
+- *2-D Array, of shape (N, N)*: Covariance matrix of the distribution.
 
 
 ##### `distribution.setCov(newMean) -> Distribution`
 
-Arguments:
-    - `newMean` *2-D Array, of shape (N, N)*: Covariance matrix of the distribution. It must be symmetric and positive-semidefinite for proper sampling.
-
 Returns a new Distribution with the same mean as the current distribution, but a new covariance matrix.
 
+Arguments:
+
+- `newMean` *2-D Array, of shape (N, N)*: Covariance matrix of the distribution. It must be symmetric and positive-semidefinite for proper sampling.
+
+Returns:
+
+- A new Distribution object.
 
 Get Involved
 ====================
 
-If you've found a bug or have a feature request, [file an issue on Github](https://github.com/tulip/multivariate-normal-js).
+If you've found a bug or have a feature request, [file an issue on Github](https://github.com/tulip/multivariate-normal-js/issues).
 
 To get started developing:
 
@@ -135,7 +153,7 @@ Coding Conventions
 * [Stroustrup Indentation Style](https://en.wikipedia.org/wiki/Indent_style#Variant:_Stroustrup)
 * Four spaces, no tabs
 * Trailing newline in all files
-* Everything in our [eslintrc](.eslintrc)
+* Everything in our [eslintrc](.eslintrc.yml)
 
 License
 ====================
