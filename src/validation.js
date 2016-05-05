@@ -7,9 +7,6 @@ const deepFreeze = (ary) => {
         ary.forEach(deepFreeze);
         Object.freeze(ary);
     }
-    else {
-        Object.freeze(ary);
-    }
 };
 
 // validates a mean vector that's supposed to be of length n
