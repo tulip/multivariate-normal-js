@@ -14,16 +14,11 @@ The multivariate normal, multinormal or Gaussian distribution is a generalizatio
 See [the NumPy documentation](http://docs.scipy.org/doc/numpy-1.10.0/reference/generated/numpy.random.multivariate_normal.html) additional notes, examples, and references.
 
 
-Who's Behind It
-====================
-
-Munit Helpers is maintained by Tulip. We're an MIT startup located in Boston, helping enterprises manage, understand, and improve their manufacturing operations. We bring our customers modern web-native user experiences to the challenging world of manufacturing, currently dominated by ancient enterprise IT technology. We work on Meteor web apps, embedded software, computer vision, and anything else we can use to introduce digital transformation to the world of manufacturing. If these sound like interesting problems to you, [we should talk](mailto:jobs@tulip.co).
-
-
 Example
 ====================
 
-To start, just `npm install multivariate-normal`.
+To start, just `npm install multivariate-normal`. You can also get one of the
+pre-built files from the `dist` folder.
 
 Then you can do:
 
@@ -130,10 +125,9 @@ To get started developing:
 
 1. Clone this repo.
 2. `npm install`
-3. `npm install -g webpack-dev-server`
 
 Then, you can run the tests with `npm test`, or run the example app with
-`cd example; webpack-dev-server` and then naviating to http://localhost:8080.
+`npm start` and then navigating to http://localhost:8080.
 
 Contributing
 ====================
@@ -159,3 +153,10 @@ License
 ====================
 
 multivariate-normal-js is licensed under the [Apache Public License](LICENSE).
+
+
+Who's Behind It
+====================
+
+Munit Helpers is maintained by Tulip. We're an MIT startup located in Boston, helping enterprises manage, understand, and improve their manufacturing operations. We bring our customers modern web-native user experiences to the challenging world of manufacturing, currently dominated by ancient enterprise IT technology. We work on Meteor web apps, embedded software, computer vision, and anything else we can use to introduce digital transformation to the world of manufacturing. If these sound like interesting problems to you, [we should talk](mailto:jobs@tulip.co).
+
