@@ -1,8 +1,8 @@
 {
   "name": "multivariate-normal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Port of NumPy's random.multivariate_normal to Node.JS",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "eslint src spec example/js && jasmine",
     "start": "cd example && webpack-dev-server",
