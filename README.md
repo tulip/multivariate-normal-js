@@ -23,7 +23,8 @@ pre-built files from the `dist` folder.
 Then you can do:
 
 ```javascript
-    var MultivariateNormal = require("multivariate-normal");
+    import MultivariateNormal from "multivariate-normal";
+    // or without ES6 import: var MultivariateNormal = require("multivariate-normal").default;
 
     // means of our three dimensions
     var meanVector = [1, 2, 3];
@@ -36,7 +37,7 @@ Then you can do:
         [ 0.9, 0.0, 1.0 ],
     ];
 
-    var distribution = MultivariateNormal(mean, covarianceMatrix);
+    var distribution = MultivariateNormal(meanVector, covarianceMatrix);
     distribution.sample(); // => [1.2, 1.8, 3.3]
 
     var newDistribution = distribution.setMean([3, 2, 1]);
