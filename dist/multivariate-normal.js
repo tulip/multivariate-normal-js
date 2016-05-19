@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.MultivariateNormal = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -101,29 +101,7 @@ var Distribution = function Distribution(n, mean, cov, _ref) {
 };
 
 exports.default = Distribution;
-},{"./validation.js":4,"gaussian":5,"numeric":7}],2:[function(require,module,exports){
-"use strict";
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; }; /* eslint-disable */
-
-var _index = require("./index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = _index2.default;
-} else if (typeof define === "function" && define.amd) {
-    define([], function () {
-        return _index2.default;
-    });
-} else if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") {
-    window.MN = _index2.default;
-} else {
-    console.warn("Could not export MultivariableNormal");
-}
-},{"./index.js":3}],3:[function(require,module,exports){
+},{"./validation.js":3,"gaussian":4,"numeric":6}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -160,7 +138,7 @@ var MultivariateNormal = function MultivariateNormal(unvalidatedMean, unvalidate
 };
 
 exports.default = MultivariateNormal;
-},{"./distribution.js":1,"./validation.js":4,"lodash":6}],4:[function(require,module,exports){
+},{"./distribution.js":1,"./validation.js":3,"lodash":5}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -285,7 +263,7 @@ var validateCovAndGetSVD = function validateCovAndGetSVD(cov, n) {
 
 exports.validateMean = validateMean;
 exports.validateCovAndGetSVD = validateCovAndGetSVD;
-},{"lodash":6,"numeric":7}],5:[function(require,module,exports){
+},{"lodash":5,"numeric":6}],4:[function(require,module,exports){
 (function(exports) {
 
   // Complementary error function
@@ -400,7 +378,7 @@ exports.validateCovAndGetSVD = validateCovAndGetSVD;
     ? function(e) { module.exports = e; }
     : function(e) { this["gaussian"] = e; });
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -16553,7 +16531,7 @@ exports.validateCovAndGetSVD = validateCovAndGetSVD;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 "use strict";
 
@@ -20981,4 +20959,5 @@ numeric.svd= function svd(A) {
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[2]);
+},{}]},{},[2])(2)
+});

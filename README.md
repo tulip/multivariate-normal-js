@@ -25,6 +25,7 @@ Then you can do:
 ```javascript
     import MultivariateNormal from "multivariate-normal";
     // or without ES6 import: var MultivariateNormal = require("multivariate-normal").default;
+    // or without a CommonJS runtime: <script src="path/to/multivariate-normal.min.js"></script>, and then use the global window.MultivariateNormal.default
 
     // means of our three dimensions
     var meanVector = [1, 2, 3];
