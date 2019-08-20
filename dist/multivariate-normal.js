@@ -2,20 +2,17 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
 var _validation = require("./validation.js");
 
-var _gaussian = require("gaussian");
+var _gaussian = _interopRequireDefault(require("gaussian"));
 
-var _gaussian2 = _interopRequireDefault(_gaussian);
+var _numeric = _interopRequireDefault(require("numeric"));
 
-var _numeric = require("numeric");
-
-var _numeric2 = _interopRequireDefault(_numeric);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // Low-level distribution constructor. NOT a public API.
 //
@@ -27,250 +24,238 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // preconditions:
 //   - mean and cov have been validated
 //   - mean and cov are frozen
-
-var standardNormalDist = (0, _gaussian2.default)(0, 1);
+var standardNormalDist = (0, _gaussian["default"])(0, 1);
 
 var standardNormalVector = function standardNormalVector(length) {
-    var ary = [];
+  var ary = [];
 
-    for (var i = 0; i < length; i++) {
-        ary.push(standardNormalDist.ppf(Math.random()));
-    }
+  for (var i = 0; i < length; i++) {
+    ary.push(standardNormalDist.ppf(Math.random()));
+  }
 
-    return ary;
+  return ary;
 };
 
 var Distribution = function Distribution(n, mean, cov, _ref) {
-    var u = _ref.u,
-        s = _ref.s,
-        v = _ref.v;
+  var u = _ref.u,
+      s = _ref.s,
+      v = _ref.v;
+  return {
+    sample: function sample() {
+      // From numpy (paraphrased):
+      //   x = standard_normal(n)
+      //   x = np.dot(x, np.sqrt(s)[:, None] * v)
+      //   x += mean
+      //
+      // https://github.com/numpy/numpy/blob/a835270d718d299535606d7104fd86d9b2aa68a6/numpy/random/mtrand/mtrand.pyx
+      // np.sqrt(s)[:, None] * v
+      //
+      // This is an elegant way in numpy to multiply each column of
+      // v by sqrt(s). Unfortunately, we don't have numpy, so we do this
+      // manually
+      var sqrtS = s.map(Math.sqrt);
+      var scaledV = v.map(function (row) {
+        return row.map(function (val, colIdx) {
+          return val * sqrtS[colIdx];
+        });
+      }); // We populate a row vector with a standard normal distribution
+      // (mean 0, variance 1), and then multiply it with scaledV
 
-    return {
-        sample: function sample() {
-            // From numpy (paraphrased):
-            //   x = standard_normal(n)
-            //   x = np.dot(x, np.sqrt(s)[:, None] * v)
-            //   x += mean
-            //
-            // https://github.com/numpy/numpy/blob/a835270d718d299535606d7104fd86d9b2aa68a6/numpy/random/mtrand/mtrand.pyx
+      var standardNormal = standardNormalVector(n); // compute the correlated dsitribution based on the covariance
+      // matrix
 
-            // np.sqrt(s)[:, None] * v
-            //
-            // This is an elegant way in numpy to multiply each column of
-            // v by sqrt(s). Unfortunately, we don't have numpy, so we do this
-            // manually
-            var sqrtS = s.map(Math.sqrt);
-            var scaledV = v.map(function (row) {
-                return row.map(function (val, colIdx) {
-                    return val * sqrtS[colIdx];
-                });
-            });
+      var variants = _numeric["default"].dot(standardNormal, _numeric["default"].transpose(scaledV)); // add the mean
 
-            // We populate a row vector with a standard normal distribution
-            // (mean 0, variance 1), and then multiply it with scaledV
-            var standardNormal = standardNormalVector(n);
 
-            // compute the correlated dsitribution based on the covariance
-            // matrix
-            var variants = _numeric2.default.dot(standardNormal, _numeric2.default.transpose(scaledV));
+      return variants.map(function (variant, idx) {
+        return variant + mean[idx];
+      });
+    },
+    getMean: function getMean() {
+      return mean;
+    },
+    setMean: function setMean(unvalidatedMean) {
+      var newMean = (0, _validation.validateMean)(unvalidatedMean, n);
+      return Distribution(n, newMean, cov, {
+        u: u,
+        s: s,
+        v: v
+      });
+    },
+    getCov: function getCov() {
+      return cov;
+    },
+    setCov: function setCov(unvalidatedCov) {
+      var _validateCovAndGetSVD = (0, _validation.validateCovAndGetSVD)(unvalidatedCov, n),
+          newCov = _validateCovAndGetSVD.cov,
+          newSVD = _validateCovAndGetSVD.svd;
 
-            // add the mean
-            return variants.map(function (variant, idx) {
-                return variant + mean[idx];
-            });
-        },
-        getMean: function getMean() {
-            return mean;
-        },
-        setMean: function setMean(unvalidatedMean) {
-            var newMean = (0, _validation.validateMean)(unvalidatedMean, n);
-            return Distribution(n, newMean, cov, { u: u, s: s, v: v });
-        },
-        getCov: function getCov() {
-            return cov;
-        },
-        setCov: function setCov(unvalidatedCov) {
-            var _validateCovAndGetSVD = (0, _validation.validateCovAndGetSVD)(unvalidatedCov, n),
-                newCov = _validateCovAndGetSVD.cov,
-                newSVD = _validateCovAndGetSVD.svd;
-
-            return Distribution(n, mean, newCov, newSVD);
-        }
-    };
+      return Distribution(n, mean, newCov, newSVD);
+    }
+  };
 };
 
-exports.default = Distribution;
+var _default = Distribution;
+exports["default"] = _default;
 },{"./validation.js":3,"gaussian":4,"numeric":9}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _lodash = require("lodash.isarray");
-
-var _lodash2 = _interopRequireDefault(_lodash);
+var _lodash = _interopRequireDefault(require("lodash.isarray"));
 
 var _validation = require("./validation.js");
 
-var _distribution = require("./distribution.js");
+var _distribution = _interopRequireDefault(require("./distribution.js"));
 
-var _distribution2 = _interopRequireDefault(_distribution);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var MultivariateNormal = function MultivariateNormal(unvalidatedMean, unvalidatedCov) {
-    if (!(0, _lodash2.default)(unvalidatedMean)) {
-        throw new Error("mean must be an array");
-    }
+  if (!(0, _lodash["default"])(unvalidatedMean)) {
+    throw new Error("mean must be an array");
+  }
 
-    var n = unvalidatedMean.length;
-    var mean = (0, _validation.validateMean)(unvalidatedMean, n);
+  var n = unvalidatedMean.length;
+  var mean = (0, _validation.validateMean)(unvalidatedMean, n);
 
-    var _validateCovAndGetSVD = (0, _validation.validateCovAndGetSVD)(unvalidatedCov, n),
-        cov = _validateCovAndGetSVD.cov,
-        svd = _validateCovAndGetSVD.svd;
+  var _validateCovAndGetSVD = (0, _validation.validateCovAndGetSVD)(unvalidatedCov, n),
+      cov = _validateCovAndGetSVD.cov,
+      svd = _validateCovAndGetSVD.svd;
 
-    return (0, _distribution2.default)(n, mean, cov, svd);
+  return (0, _distribution["default"])(n, mean, cov, svd);
 };
 
-exports.default = MultivariateNormal;
+var _default = MultivariateNormal;
+exports["default"] = _default;
 },{"./distribution.js":1,"./validation.js":3,"lodash.isarray":6}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.validateCovAndGetSVD = exports.validateMean = undefined;
+exports.validateCovAndGetSVD = exports.validateMean = void 0;
 
-var _lodash = require("lodash.isarray");
+var _lodash = _interopRequireDefault(require("lodash.isarray"));
 
-var _lodash2 = _interopRequireDefault(_lodash);
+var _lodash2 = _interopRequireDefault(require("lodash.every"));
 
-var _lodash3 = require("lodash.every");
+var _lodash3 = _interopRequireDefault(require("lodash.isnumber"));
 
-var _lodash4 = _interopRequireDefault(_lodash3);
+var _lodash4 = _interopRequireDefault(require("lodash.some"));
 
-var _lodash5 = require("lodash.isnumber");
+var _numeric = _interopRequireDefault(require("numeric"));
 
-var _lodash6 = _interopRequireDefault(_lodash5);
-
-var _lodash7 = require("lodash.some");
-
-var _lodash8 = _interopRequireDefault(_lodash7);
-
-var _numeric = require("numeric");
-
-var _numeric2 = _interopRequireDefault(_numeric);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // freezes nested arrays
 var deepFreeze = function deepFreeze(ary) {
-    if ((0, _lodash2.default)(ary)) {
-        ary.forEach(deepFreeze);
-        Object.freeze(ary);
-    }
-};
-
-// validates a mean vector that's supposed to be of length n
+  if ((0, _lodash["default"])(ary)) {
+    ary.forEach(deepFreeze);
+    Object.freeze(ary);
+  }
+}; // validates a mean vector that's supposed to be of length n
 //
 // on success, freezes mean and returns it
+
+
 var validateMean = function validateMean(mean, n) {
-    // must be an array
-    if (!(0, _lodash2.default)(mean)) {
-        throw new Error("Mean must be an array");
-    }
+  // must be an array
+  if (!(0, _lodash["default"])(mean)) {
+    throw new Error("Mean must be an array");
+  } // must be an array of numbers
 
-    // must be an array of numbers
-    if (!(0, _lodash4.default)(mean, _lodash6.default)) {
-        throw new Error("Mean must be an array of numbers");
-    }
 
-    // must have the correct length
-    if (mean.length !== n) {
-        throw new Error("Expected mean to have length " + n + ", but had length " + mean.length);
-    }
+  if (!(0, _lodash2["default"])(mean, _lodash3["default"])) {
+    throw new Error("Mean must be an array of numbers");
+  } // must have the correct length
 
-    Object.freeze(mean);
 
-    return mean;
-};
+  if (mean.length !== n) {
+    throw new Error("Expected mean to have length ".concat(n, ", but had length ").concat(mean.length));
+  }
 
-// validates a covariance matrix that's supposed to be NxN. If successful,
+  Object.freeze(mean);
+  return mean;
+}; // validates a covariance matrix that's supposed to be NxN. If successful,
 // computes the SVD, freezes cov, and returns {cov, svd: { u, s, v }}
-var validateCovAndGetSVD = function validateCovAndGetSVD(cov, n) {
-    // must be an array
-    if (!(0, _lodash2.default)(cov)) {
-        throw new Error("Covariance must be an array");
-    }
 
-    // must have n elements
-    if (cov.length !== n) {
-        throw new Error("Covariance matrix had " + cov.length + " rows, but it should be a " + n + "x" + n + " square matrix");
-    }
-
-    // validate each row
-    cov.forEach(function (row, idx) {
-        // must be an array
-        if (!(0, _lodash2.default)(row)) {
-            throw new Error("Row " + idx + " of covariance matrix was not an array");
-        }
-
-        // must have n elements
-        if (row.length !== n) {
-            throw new Error("Row " + idx + " of covariance matrix had length " + row.length + ", but it should have length " + n);
-        }
-
-        // each element must be a number
-        if (!(0, _lodash4.default)(row, _lodash6.default)) {
-            throw new Error("Row " + idx + " of covariance matrix contained a non-numeric value");
-        }
-    });
-
-    // matrix must be positive semidefinite
-    var eigenvalues = _numeric2.default.eig(cov).lambda.x;
-    if ((0, _lodash8.default)(eigenvalues, function (v) {
-        return v < 0;
-    })) {
-        throw new Error("Covariance isn't positive semidefinite");
-    }
-
-    // matrix must be symmetric
-    if (!_numeric2.default.same(_numeric2.default.transpose(cov), cov)) {
-        throw new Error("Covariance isn't symmetric");
-    }
-
-    // do decomposition
-    // We use the SVD algorithm from Numeric.js because it's efficient and
-    // reliable. Sylvester includes an SVD algorithm that doesn't hand some
-    // edge cases and is also extremely slow (takes ~500ms to compute and SVD
-    // for a 15x15 matrix). Numeric can do a 250x250 matrix in ~500ms.
-    //
-    // There's also node-svd, which is a wrapper around a C implementation.
-    // It's slightly faster than Numeric (it can do a 370x370 matrix in ~500ms),
-    // but can't run the browser and doesn't handle some edge cases well.
-
-    var _Numeric$svd = _numeric2.default.svd(cov),
-        u = _Numeric$svd.U,
-        s = _Numeric$svd.S,
-        v = _Numeric$svd.V;
-
-    // deep freeze cov and svd
-
-
-    deepFreeze(cov);
-    deepFreeze(u);
-    deepFreeze(s);
-    deepFreeze(v);
-
-    return {
-        cov: cov,
-        svd: { u: u, s: s, v: v }
-    };
-};
 
 exports.validateMean = validateMean;
+
+var validateCovAndGetSVD = function validateCovAndGetSVD(cov, n) {
+  // must be an array
+  if (!(0, _lodash["default"])(cov)) {
+    throw new Error("Covariance must be an array");
+  } // must have n elements
+
+
+  if (cov.length !== n) {
+    throw new Error("Covariance matrix had ".concat(cov.length, " rows, but it should be a ").concat(n, "x").concat(n, " square matrix"));
+  } // validate each row
+
+
+  cov.forEach(function (row, idx) {
+    // must be an array
+    if (!(0, _lodash["default"])(row)) {
+      throw new Error("Row ".concat(idx, " of covariance matrix was not an array"));
+    } // must have n elements
+
+
+    if (row.length !== n) {
+      throw new Error("Row ".concat(idx, " of covariance matrix had length ").concat(row.length, ", but it should have length ").concat(n));
+    } // each element must be a number
+
+
+    if (!(0, _lodash2["default"])(row, _lodash3["default"])) {
+      throw new Error("Row ".concat(idx, " of covariance matrix contained a non-numeric value"));
+    }
+  }); // matrix must be positive semidefinite
+
+  var eigenvalues = _numeric["default"].eig(cov).lambda.x;
+
+  if ((0, _lodash4["default"])(eigenvalues, function (v) {
+    return v < 0;
+  })) {
+    throw new Error("Covariance isn't positive semidefinite");
+  } // matrix must be symmetric
+
+
+  if (!_numeric["default"].same(_numeric["default"].transpose(cov), cov)) {
+    throw new Error("Covariance isn't symmetric");
+  } // do decomposition
+  // We use the SVD algorithm from Numeric.js because it's efficient and
+  // reliable. Sylvester includes an SVD algorithm that doesn't hand some
+  // edge cases and is also extremely slow (takes ~500ms to compute and SVD
+  // for a 15x15 matrix). Numeric can do a 250x250 matrix in ~500ms.
+  //
+  // There's also node-svd, which is a wrapper around a C implementation.
+  // It's slightly faster than Numeric (it can do a 370x370 matrix in ~500ms),
+  // but can't run the browser and doesn't handle some edge cases well.
+
+
+  var _Numeric$svd = _numeric["default"].svd(cov),
+      u = _Numeric$svd.U,
+      s = _Numeric$svd.S,
+      v = _Numeric$svd.V; // deep freeze cov and svd
+
+
+  deepFreeze(cov);
+  deepFreeze(u);
+  deepFreeze(s);
+  deepFreeze(v);
+  return {
+    cov: cov,
+    svd: {
+      u: u,
+      s: s,
+      v: v
+    }
+  };
+};
+
 exports.validateCovAndGetSVD = validateCovAndGetSVD;
 },{"lodash.every":5,"lodash.isarray":6,"lodash.isnumber":7,"lodash.some":8,"numeric":9}],4:[function(require,module,exports){
 (function(exports) {

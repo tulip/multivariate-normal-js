@@ -5,18 +5,22 @@ module.exports = {
         filename: "bundle.js",
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components|vendor)/,
-                loader: "babel",
-                query: {
-                    presets: ["es2015"],
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/env"],
+                    },
                 },
             },
             {
                 test: /\.json$/,
-                loader: "json",
+                use: {
+                    loader: "json",
+                },
             },
         ],
     },
