@@ -5,4 +5,4 @@ mkdir -p dist
 
 babel src -d build
 browserify build/index.js --standalone MultivariateNormal > dist/multivariate-normal.js
-uglifyjs dist/multivariate-normal.js > dist/multivariate-normal.min.js
+terser --compress --mangle -- dist/multivariate-normal.js > dist/multivariate-normal.min.js

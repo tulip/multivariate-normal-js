@@ -1,9 +1,14 @@
-import _ from "lodash";
+import isArray from "lodash.isarray";
+import every from "lodash.every";
+import isNumber from "lodash.isnumber";
+import some from "lodash.some";
+
+
 import Numeric from "numeric";
 
 // freezes nested arrays
 const deepFreeze = (ary) => {
-    if (_.isArray(ary)) {
+    if (isArray(ary)) {
         ary.forEach(deepFreeze);
         Object.freeze(ary);
     }
@@ -14,12 +19,12 @@ const deepFreeze = (ary) => {
 // on success, freezes mean and returns it
 const validateMean = (mean, n) => {
     // must be an array
-    if (!_.isArray(mean)) {
+    if (!isArray(mean)) {
         throw new Error("Mean must be an array");
     }
 
     // must be an array of numbers
-    if (!_.every(mean, _.isNumber)) {
+    if (!every(mean, isNumber)) {
         throw new Error("Mean must be an array of numbers");
     }
 
@@ -37,7 +42,7 @@ const validateMean = (mean, n) => {
 // computes the SVD, freezes cov, and returns {cov, svd: { u, s, v }}
 const validateCovAndGetSVD = (cov, n) => {
     // must be an array
-    if (!_.isArray(cov)) {
+    if (!isArray(cov)) {
         throw new Error("Covariance must be an array");
     }
 
@@ -49,7 +54,7 @@ const validateCovAndGetSVD = (cov, n) => {
     // validate each row
     cov.forEach((row, idx) => {
         // must be an array
-        if (!_.isArray(row)) {
+        if (!isArray(row)) {
             throw new Error(`Row ${idx} of covariance matrix was not an array`);
         }
 
@@ -59,14 +64,14 @@ const validateCovAndGetSVD = (cov, n) => {
         }
 
         // each element must be a number
-        if (!_.every(row, _.isNumber)) {
+        if (!every(row, isNumber)) {
             throw new Error(`Row ${idx} of covariance matrix contained a non-numeric value`);
         }
     });
 
     // matrix must be positive semidefinite
     const eigenvalues = Numeric.eig(cov).lambda.x;
-    if (_.some(eigenvalues, v => v < 0)) {
+    if (some(eigenvalues, v => v < 0)) {
         throw new Error("Covariance isn't positive semidefinite");
     }
 
