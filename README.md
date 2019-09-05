@@ -1,6 +1,8 @@
 multivariate-normal-js
 =====================
 
+[![TypeScript definitions on DefinitelyTyped](https://definitelytyped.org/badges/standard.svg)](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/multivariate-normal)
+
 A pure-javascript port of NumPy's `random.multivariate_normal`, for Node.js and the browser.
 
 Check out the [live demo](http://tulip.github.io/multivariate-normal-js)!
@@ -49,6 +51,11 @@ Then you can do:
     newDistribution.getMean(); // => [3, 2, 1];
 
 ```
+
+Typescript
+==========
+
+Install `@types/multivariate-normal` for the Typescript definitions to go along with this package.
 
 API
 ====================
