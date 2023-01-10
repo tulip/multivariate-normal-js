@@ -4,7 +4,7 @@
   "description": "Port of NumPy's random.multivariate_normal to Node.JS",
   "main": "src/index.js",
   "scripts": {
-    "test": "eslint src spec example/js && jasmine",
+    "test": "eslint src spec example/js && jest",
     "start": "cd example && webpack-dev-server",
     "prepublish": "dist-es6",
     "bundle": "scripts/bundle.sh"
@@ -50,6 +50,7 @@
     "lodash.isarray": "^4.0.0",
     "lodash.isnumber": "^3.0.3",
     "lodash.some": "^4.6.0",
-    "numeric": "^1.2.6"
+    "numeric": "^1.2.6",
+    "seedrandom": "^3.0.5"
   }
 }

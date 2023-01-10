@@ -1,6 +1,6 @@
 /* globals describe, it, expect */
 
-import { validateMean, validateCovAndGetSVD } from "multivariate-normal/validation.js";
+import { validateMean, validateCovAndGetSVD } from "../src/validation";
 import { roundMatrix } from "./util";
 
 describe("The validation function", () => {
