@@ -116,7 +116,7 @@ var _distribution = _interopRequireDefault(require("./distribution.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var MultivariateNormal = function MultivariateNormal(unvalidatedMean, unvalidatedCov) {
+var MultivariateNormal = function MultivariateNormal(unvalidatedMean, unvalidatedCov, seed) {
   if (!(0, _lodash["default"])(unvalidatedMean)) {
     throw new Error("mean must be an array");
   }
@@ -128,7 +128,7 @@ var MultivariateNormal = function MultivariateNormal(unvalidatedMean, unvalidate
       cov = _validateCovAndGetSVD.cov,
       svd = _validateCovAndGetSVD.svd;
 
-  return (0, _distribution["default"])(n, mean, cov, svd);
+  return (0, _distribution["default"])(n, mean, cov, svd, seed);
 };
 
 var _default = MultivariateNormal;

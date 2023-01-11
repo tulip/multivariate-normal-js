@@ -206,4 +206,28 @@ describe("A Distribution", () => {
             ]);
         }).toThrowError(Error, "Covariance matrix had 2 rows, but it should be a 3x3 square matrix");
     });
+
+    it("should return the same when using same seed", () => {
+        const firstSample =   MultivariateNormal(
+            [1, 2, 0],
+            [
+                [1, 1, 1],
+                [1, 1, 1],
+                [1, 1, 1],
+            ],
+            "seed"
+        ).sample();
+        const secondSample =   MultivariateNormal(
+            [1, 2, 0],
+            [
+                [1, 1, 1],
+                [1, 1, 1],
+                [1, 1, 1],
+            ],
+            "seed"
+        ).sample();
+
+
+        expect(firstSample).toEqual(secondSample);
+    });
 });

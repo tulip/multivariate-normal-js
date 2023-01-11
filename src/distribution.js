@@ -1,6 +1,7 @@
 import { validateMean, validateCovAndGetSVD } from "./validation.js";
 import gaussian from "gaussian";
 import Numeric from "numeric";
+import seedrandom from "seedrandom";
 
 // Low-level distribution constructor. NOT a public API.
 //
@@ -15,17 +16,18 @@ import Numeric from "numeric";
 
 const standardNormalDist = gaussian(0, 1);
 
-const standardNormalVector = (length) => {
+const standardNormalVector = (length, seedRandom) => {
     const ary = [];
 
     for (let i = 0; i < length; i++) {
-        ary.push(standardNormalDist.ppf(Math.random()));
+        ary.push(standardNormalDist.ppf(seedRandom()));
     }
 
     return ary;
 };
 
-const Distribution = (n, mean, cov, { u, s, v }) => {
+const Distribution = (n, mean, cov, { u, s, v }, seed) => {
+    const seedRandom = new seedrandom(seed);
     return {
         sample() {
             // From numpy (paraphrased):
@@ -49,7 +51,7 @@ const Distribution = (n, mean, cov, { u, s, v }) => {
 
             // We populate a row vector with a standard normal distribution
             // (mean 0, variance 1), and then multiply it with scaledV
-            const standardNormal = standardNormalVector(n);
+            const standardNormal = standardNormalVector(n, seedRandom);
 
             // compute the correlated dsitribution based on the covariance
             // matrix
